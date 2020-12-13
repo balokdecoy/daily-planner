@@ -5,9 +5,10 @@ var testHour = dayjs().hour();
 var currentMinute = dayjs().format('mm');
 var current12 = dayjs().format('A');
 var currentEvents = [];
+console.log(currentHour);
 
 // Display the current time and date
-$('#currentDay').text(currentHour + ":" + currentMinute + " " + currentDate);
+$('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + currentDate);
 
 // Set local storage to currentEvents array
 init();

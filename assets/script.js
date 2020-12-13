@@ -12,57 +12,46 @@ $('#currentDay').text(currentHour + ":" + currentMinute + " " + currentDate);
 var timeBlocks = [
     {
         time: 8,
-        status: '',
         showTime: '8AM',
     },
     {
         time: 9,
-        status: '',
         showTime: '9AM',
     },
     {
         time: 10,
-        status: '',
         showTime: '10AM', 
     },
     {
         time: 11,
-        status: '',
         showTime: '11AM',
     },
     {
         time: 12,
-        status: '',
         showTime: '12PM',
     },
     {
         time: 13,
-        status: '',
         showTime: '1PM',
     },
     {
         time: 14,
-        status: '',
         showTime: '2PM',
     },
     {
         time: 15,
-        status: '',
         showTime: '3PM',
     },
     {
         time: 16,
-        status: '',
         showTime: '4PM',
     },
     {
         time: 17,
-        status: '',
         showTime: '5PM',
     },
     {
         time: 18,
-        status: '',
         showTime: '6PM',
     },
 ]
@@ -81,14 +70,15 @@ for (var i = 0; i < timeBlocks.length; i++) {
         else if (p === 1) {
             var planner = $('<textarea>');
             planner.attr('class', 'col-8 description');
+            planner.attr('style', 'color: black');
             if (testHour === timeBlocks[i].time) {
                 $(planner).addClass('present');
             }
             else if (testHour < timeBlocks[i].time) {
-                $(planner).addClass('past');
+                $(planner).addClass('future');
             }
             else {
-                $(planner).addClass('future');
+                $(planner).addClass('past');
             }
         }
         else if (p === 2) {

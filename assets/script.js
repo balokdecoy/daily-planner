@@ -104,7 +104,6 @@ function init() {
     if (storedEvents !== null) {
         currentEvents = storedEvents;
     }
-    console.log(currentEvents);
 }
 
 // Send currentEvents array to local storage
@@ -118,6 +117,8 @@ function clearStorage () {
 }
 
 // Event listener
-$('button').click(function() {
-      alert('button');
+$('button').click(function(event) {
+    event.preventDefault();
+    alert(event);
+    
 })

@@ -48,3 +48,17 @@ var timeBlocks = [
     },
 ]
 
+for (var i = 0; i < timeBlocks.length; i++) {
+    var row = $('<div>')
+    row.attr('class', 'row');
+    $('.container').append(row);
+}
+
+var columnWidths = [2, 8, 2];
+
+for (var i = 0; i < columnWidths.length; i++) {
+    var col = $('<div>');
+    col.attr('class', columnWidths[i]);
+    $('.row').append(col);
+}
+

@@ -4,15 +4,20 @@ var currentHour = dayjs().format('h');
 var testHour = dayjs().hour();
 var currentMinute = dayjs().format('mm');
 var current12 = dayjs().format('A');
+var currentEvents = [];
 
 // Display the current time and date
 $('#currentDay').text(currentHour + ":" + currentMinute + " " + currentDate);
+
+// Set local storage to currentEvents array
+init();
 
 // Timeblock array holding an object for each workday hour
 var timeBlocks = [
     {
         time: 8,
         showTime: '8AM',
+        dayEvent: '',
     },
     {
         time: 9,
@@ -69,6 +74,7 @@ for (var i = 0; i < timeBlocks.length; i++) {
         }
         else if (p === 1) {
             var planner = $('<textarea>');
+            var event;
             planner.attr('class', 'col-8 description');
             planner.attr('style', 'color: black');
             if (testHour === timeBlocks[i].time) {
@@ -82,7 +88,7 @@ for (var i = 0; i < timeBlocks.length; i++) {
             }
         }
         else if (p === 2) {
-            var save = $('<i>');
+            var save = $('<button>');
             save.attr('class', 'col-2 saveBtn fas fa-save fa-4x fa-fw');
         }
     }
@@ -90,5 +96,27 @@ for (var i = 0; i < timeBlocks.length; i++) {
     $(row).append(timeDisplay, planner, save);
 }
 
-console.log(testHour);
-console.log(parseInt($('#id').val()))
+// Check for storedEvents in local storage and add to currentEvents array
+function init() {
+    var storedEvents = JSON.parse(localStorage.getItem("storedEvents"));
+
+    if (storedEvents !== null) {
+        currentEvents = storedEvents;
+    }
+    console.log(currentEvents);
+}
+
+// Send currentEvents array to local storage
+function storeEvents() {
+    localStorage.setItem("currentEvents", JSON.stringify(currentEvents));
+}
+
+// Button to clear local storage and delete past events from page
+function clearStorage () {
+    localStorage.clear();
+}
+
+// Event listener
+$('button').click(function() {
+      alert('button');
+})

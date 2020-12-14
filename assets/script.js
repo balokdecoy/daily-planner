@@ -12,10 +12,6 @@ $('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + curr
 // Set local storage to currentEvents array
 init();
 
-if (localStorage.Recorded != currentDate) {
-    clearStorage();
-}
-
 // Timeblock array holding an object for each workday hour
 var timeBlocks = [
     {
@@ -88,10 +84,9 @@ for (var i = 0; i < timeBlocks.length; i++) {
         }
         else if (p === 1) {
             var planner = $('<textarea>');
-            var event;
+            $(planner).text(timeBlocks[i].hourEvent);
             planner.attr('class', 'col-8 description');
             planner.attr('style', 'color: black');
-            planner.attr('id', 'anEvent');
             if (testHour === timeBlocks[i].time) {
                 $(planner).addClass('present');
             }
@@ -104,6 +99,7 @@ for (var i = 0; i < timeBlocks.length; i++) {
         }
         else if (p === 2) {
             var save = $('<button>');
+            save.val(i);
             save.attr('class', 'col-2 saveBtn fas fa-save fa-4x fa-fw');
         }
     }
@@ -113,19 +109,26 @@ for (var i = 0; i < timeBlocks.length; i++) {
 
 // Check for storedEvents in local storage and add to currentEvents array
 function init() {
-    var storedEvents = JSON.parse(localStorage.getItem("Planner", "Recorded"));
+    var storedEvents = JSON.parse(localStorage.getItem('currentEvents'));
+    console.log(storedEvents);
 
     if (storedEvents !== null) {
         currentEvents = storedEvents;
+    }
+
+    // Check local storage for a recorded date. If recorded date is not current date, delete storage
+    if (localStorage.Recorded != currentDate) {
+        clearStorage();
     }
 }
 
 // Send currentEvents array to local storage
 function storeEvents() {
     localStorage.setItem("currentEvents", JSON.stringify(currentEvents));
+    localStorage.setItem("Recorded", currentDate);
 }
 
-// Button to clear local storage and delete past events from page
+// Function that clears local storage and deletes past events 
 function clearStorage () {
     localStorage.clear();
 }
@@ -135,7 +138,8 @@ $('button').on('click', function(event) {
     event.preventDefault();
     var thisBtn = this.value;
     var thisEvent = $(this).prev().val();
-    currentEvents.push(thisEvent, currentDate);
-    localStorage.setItem("Planner", JSON.stringify(currentEvents));
-    localStorage.setItem("Recorded", currentDate);
+    timeBlocks[thisBtn].hourEvent = thisEvent;
+    currentEvents = timeBlocks;
+    console.log(timeBlocks);
+    storeEvents();
 })

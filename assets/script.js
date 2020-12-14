@@ -5,7 +5,6 @@ var testHour = dayjs().hour();
 var currentMinute = dayjs().format('mm');
 var current12 = dayjs().format('A');
 var currentEvents = [];
-console.log(currentHour);
 
 // Display the current time and date
 $('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + currentDate);
@@ -13,58 +12,72 @@ $('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + curr
 // Set local storage to currentEvents array
 init();
 
+if (localStorage.Recorded != currentDate) {
+    clearStorage();
+}
+
 // Timeblock array holding an object for each workday hour
 var timeBlocks = [
     {
         time: 8,
         showTime: '8AM',
-        dayEvent: '',
+        hourEvent: '',
     },
     {
         time: 9,
         showTime: '9AM',
+        hourEvent: '',
     },
     {
         time: 10,
         showTime: '10AM', 
+        hourEvent: '',
     },
     {
         time: 11,
         showTime: '11AM',
+        hourEvent: '',
     },
     {
         time: 12,
         showTime: '12PM',
+        hourEvent: '',
     },
     {
         time: 13,
         showTime: '1PM',
+        hourEvent: '',
     },
     {
         time: 14,
         showTime: '2PM',
+        hourEvent: '',
     },
     {
         time: 15,
         showTime: '3PM',
+        hourEvent: '',
     },
     {
         time: 16,
         showTime: '4PM',
+        hourEvent: '',
     },
     {
         time: 17,
         showTime: '5PM',
+        hourEvent: '',
     },
     {
         time: 18,
         showTime: '6PM',
+        hourEvent: '',
     },
 ]
 
 // Create rows to hold timeblock columns
 for (var i = 0; i < timeBlocks.length; i++) {
-    var row = $('<form>');
+    var row = $('<div>');
     row.attr('class', 'row');
     $('.container').append(row);
     for (var p = 0; p < 3; p++) {
@@ -78,6 +91,7 @@ for (var i = 0; i < timeBlocks.length; i++) {
             var event;
             planner.attr('class', 'col-8 description');
             planner.attr('style', 'color: black');
+            planner.attr('id', 'anEvent');
             if (testHour === timeBlocks[i].time) {
                 $(planner).addClass('present');
             }
@@ -99,7 +113,7 @@ for (var i = 0; i < timeBlocks.length; i++) {
 
 // Check for storedEvents in local storage and add to currentEvents array
 function init() {
-    var storedEvents = JSON.parse(localStorage.getItem("storedEvents"));
+    var storedEvents = JSON.parse(localStorage.getItem("Planner", "Recorded"));
 
     if (storedEvents !== null) {
         currentEvents = storedEvents;
@@ -117,8 +131,11 @@ function clearStorage () {
 }
 
 // Event listener
-$('button').click(function(event) {
+$('button').on('click', function(event) {
     event.preventDefault();
-    alert(event);
-    
+    var thisBtn = this.value;
+    var thisEvent = $(this).prev().val();
+    currentEvents.push(thisEvent, currentDate);
+    localStorage.setItem("Planner", JSON.stringify(currentEvents));
+    localStorage.setItem("Recorded", currentDate);
 })

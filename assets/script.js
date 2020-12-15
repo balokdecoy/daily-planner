@@ -10,7 +10,7 @@ var currentEvents = [];
 $('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + currentDate);
 
 // Set local storage to currentEvents array
-init();
+//init();
 
 // Timeblock array holding an object for each workday hour
 var timeBlocks = [
@@ -84,7 +84,9 @@ for (var i = 0; i < timeBlocks.length; i++) {
         }
         else if (p === 1) {
             var planner = $('<textarea>');
-            $(planner).text(timeBlocks[i].hourEvent);
+            //$(planner).text(timeBlocks[i].hourEvent);
+            var thisEvent = localStorage.getItem(timeBlocks[i].showTime);
+            planner.val(thisEvent);
             planner.attr('class', 'col-8 description');
             planner.attr('style', 'color: black');
             if (testHour === timeBlocks[i].time) {
@@ -109,24 +111,25 @@ for (var i = 0; i < timeBlocks.length; i++) {
 
 // Check for storedEvents in local storage and add to currentEvents array
 function init() {
-    var storedEvents = JSON.parse(localStorage.getItem('currentEvents'));
-    console.log(storedEvents);
+    // var storedEvents = JSON.parse(localStorage.getItem('currentEvents'));
+    // console.log(storedEvents);
 
-    if (storedEvents !== null) {
-        currentEvents = storedEvents;
-    }
+    // if (storedEvents !== null) {
+    //     currentEvents = storedEvents;
+    // }
 
     // Check local storage for a recorded date. If recorded date is not current date, delete storage
     if (localStorage.Recorded != currentDate) {
         clearStorage();
     }
+    //timeBlocks = JSON.parse(localStorage.getItem('currentEvents'));
 }
 
 // Send currentEvents array to local storage
-function storeEvents() {
-    localStorage.setItem("currentEvents", JSON.stringify(currentEvents));
-    localStorage.setItem("Recorded", currentDate);
-}
+// function storeEvents() {
+//     localStorage.setItem("currentEvents", JSON.stringify(timeBlocks));
+//     localStorage.setItem("Recorded", currentDate);
+// }
 
 // Function that clears local storage and deletes past events 
 function clearStorage () {
@@ -134,12 +137,18 @@ function clearStorage () {
 }
 
 // Event listener
-$('button').on('click', function(event) {
+$('.saveBtn').on('click', function(event) {
     event.preventDefault();
-    var thisBtn = this.value;
-    var thisEvent = $(this).prev().val();
-    timeBlocks[thisBtn].hourEvent = thisEvent;
-    currentEvents = timeBlocks;
-    console.log(timeBlocks);
-    storeEvents();
+
+    // var thisBtn = this.value;
+    var thisEvent = $(event.target).prev('textarea').val();
+    var thisTime = $(event.target).prev().prev().text();
+
+    localStorage.setItem(thisTime, thisEvent);
+
+
+    // timeBlocks[thisBtn].hourEvent = thisEvent;
+    // currentEvents = timeBlocks;
+  
+    //storeEvents();
 })

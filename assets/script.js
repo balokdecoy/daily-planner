@@ -7,7 +7,16 @@ var current12 = dayjs().format('A');
 var currentEvents = [];
 
 // Display the current time and date
-$('#currentDay').text(currentHour + ":" + currentMinute + current12 + " " + currentDate);
+$('#currentDay').text(currentHour + ':' + currentMinute + current12 + ' ' + currentDate);
+
+// Set clear events button text
+$('#clearEvents').text('Clear Events');
+
+// Button to erase all events at user discretion
+$('#clearEvents').on('click', function (event) {
+    localStorage.clear();
+    $('textarea').val('');
+})
 
 // Timeblock array holding an object for each workday hour
 var timeBlocks = [
@@ -76,10 +85,10 @@ for (var i = 0; i < timeBlocks.length; i++) {
             planner.val(thisEvent);
             planner.attr('class', 'col-8 description');
             planner.attr('style', 'color: black');
+            // Color code textarea based on current time
             if (testHour === timeBlocks[i].time) {
                 $(planner).addClass('present');
             }
-            // Color code textarea
             else if (testHour < timeBlocks[i].time) {
                 $(planner).addClass('future');
             }
@@ -98,22 +107,12 @@ for (var i = 0; i < timeBlocks.length; i++) {
     $(row).append(timeDisplay, planner, save);
 }
 
-function init() {
-    // Check local storage for a recorded date. If recorded date is not current date, delete storage
-    if (localStorage.thisTime != currentDate) {
-        clearStorage();
-    }
-}
-
-// Function that clears local storage and deletes past events 
-function clearStorage () {
-    localStorage.clear();
-}
-
 // Event listener, store events to local storage
 $('.saveBtn').on('click', function(event) {
     event.preventDefault();
     var thisEvent = $(event.target).prev('textarea').val();
     var thisTime = $(event.target).prev().prev().text();
+    var recordDate = currentDate;
     localStorage.setItem(thisTime, thisEvent);
+    localStorage.setItem(recordDate, currentDate);
 })

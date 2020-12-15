@@ -4,7 +4,6 @@ var currentHour = dayjs().format('h');
 var testHour = dayjs().hour();
 var currentMinute = dayjs().format('mm');
 var current12 = dayjs().format('A');
-var currentEvents = [];
 
 // Display the current time and date
 $('#currentDay').text(currentHour + ':' + currentMinute + current12 + ' ' + currentDate);

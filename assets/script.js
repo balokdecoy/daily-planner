@@ -112,5 +112,4 @@ $('.saveBtn').on('click', function(event) {
     var thisEvent = $(event.target).prev('textarea').val();
     var thisTime = $(event.target).prev().prev().text();
     localStorage.setItem(thisTime, thisEvent);
-    localStorage.setItem(recordDate, currentDate);
 })
